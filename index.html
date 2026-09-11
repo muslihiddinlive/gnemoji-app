@@ -1199,17 +1199,12 @@
             
             const payload = `${typeChar}${fontChar}${scaleInt}_${yOffset}_${outHex}${inHex}${logoHex}_${tplStr}_${word64}`;
             
-            if (payload.length > 64) {
-                tg.showAlert("Kop shablon tanladingiz. Kamroq tanlang.");
+            if (payload.length > 4000) {
+                tg.showAlert("Juda ko'p shablon/matn. Birozroq kamaytiring.");
                 return;
             }
             
-            const botUrl = `https://t.me/LaborantRobot?start=${payload}`;
-            tg.openTelegramLink(botUrl);
-            
-            setTimeout(() => {
-                tg.close();
-            }, 500);
+            tg.sendData(payload);
         }
 
         // ===== BOSHLANG'ICH ISHGA TUSHIRISH =====

@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Emodzi - Robot</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.12/dist/lottie-player.js"></script>
+    <style>
+        /* ===== ASOSIY O'ZGARUVCHILAR (Dark default) ===== */
+        :root {
+            --bg: #0a0e14;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-bg-light: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --primary: #007aff;
+            --text: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.75);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --success: #34c759;
+            --separator: rgba(255, 255, 255, 0.1);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --blur: blur(15px);
+            --bg-image: url('https://i.pinimg.com/originals/6e/ee/fa/6eeefabeb3ad695872b46d492de961f3.jpg');
+            --overlay-bg: rgba(0, 0, 0, 0.35);
+        }
+
+        body.theme-dark {
+            --bg: #0a0e14;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-bg-light: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --primary: #007aff;
+            --text: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.75);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --success: #34c759;
+            --separator: rgba(255, 255, 255, 0.1);
+            --bg-image: url('https://i.pinimg.com/originals/6e/ee/fa/6eeefabeb3ad695872b46d492de961f3.jpg');
+            --overlay-bg: rgba(0, 0, 0, 0.35);
+        }
+
+        body.theme-minimal {
+            --bg: #fafafa;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-bg-light: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --glass-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            --primary: #333333;
+            --text: #111111;
+            --text-secondary: rgba(0, 0, 0, 0.65);
+            --text-muted: rgba(0, 0, 0, 0.4);
+            --success: #4a4a4a;
+            --separator: rgba(0, 0, 0, 0.05);
+            --bg-image: none;
+            --overlay-bg: transparent;
+        }
+
+        body.theme-forest {
+            --bg: #0d1f14;
+            --glass-bg: rgba(34, 80, 50, 0.35);
+            --glass-bg-light: rgba(34, 80, 50, 0.45);
+            --glass-border: rgba(144, 238, 144, 0.3);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --primary: #2ecc71;
+            --text: #eaffea;
+            --text-secondary: rgba(234, 255, 234, 0.75);
+            --text-muted: rgba(234, 255, 234, 0.5);
+            --success: #27ae60;
+            --separator: rgba(144, 238, 144, 0.2);
+            --bg-image: url('https://i.pinimg.com/originals/6e/ee/fa/6eeefabeb3ad695872b46d492de961f3.jpg');
+            --overlay-bg: rgba(13, 31, 20, 0.5);
+        }
+
+        body.theme-summer {
+            --bg: #fff8e1;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-bg-light: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 160, 0, 0.3);
+            --glass-shadow: 0 8px 32px rgba(255, 160, 0, 0.1);
+            --primary: #ff9800;
+            --text: #4e342e;
+            --text-secondary: rgba(78, 52, 46, 0.7);
+            --text-muted: rgba(78, 52, 46, 0.5);
+            --success: #ffb300;
+            --separator: rgba(255, 160, 0, 0.2);
+            --bg-image: url('https://i.pinimg.com/originals/6e/ee/fa/6eeefabeb3ad695872b46d492de961f3.jpg');
+            --overlay-bg: rgba(255, 248, 225, 0.2);
+        }
+
+        body.theme-sea {
+            --bg: #e0f7fa;
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-bg-light: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(0, 150, 136, 0.3);
+            --glass-shadow: 0 8px 32px rgba(0, 150, 136, 0.1);
+            --primary: #00897b;
+            --text: #004d40;
+            --text-secondary: rgba(0, 77, 64, 0.7);
+            --text-muted: rgba(0, 77, 64, 0.5);
+            --success: #00acc1;
+            --separator: rgba(0, 150, 136, 0.2);
+            --bg-image: url('https://i.pinimg.com/originals/6e/ee/fa/6eeefabeb3ad695872b46d492de961f3.jpg');
+            --overlay-bg: rgba(224, 247, 250, 0.2);
+        }
+
+        body.theme-ios {
+            --bg: #f2f2f7;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-bg-light: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --primary: #007aff;
+            --text: #000000;
+            --text-secondary: rgba(0, 0, 0, 0.6);
+            --text-muted: rgba(0, 0, 0, 0.4);
+            --success: #34c759;
+            --separator: rgba(0, 0, 0, 0.08);
+            --bg-image: none;
+            --overlay-bg: transparent;
+        }
+
+        body.theme-windows {
+            --bg: #1e1e1e;
+            --glass-bg: rgba(30, 30, 30, 0.7);
+            --glass-bg-light: rgba(50, 50, 50, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --primary: #0078d4;
+            --text: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.75);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --success: #13a10e;
+            --separator: rgba(255, 255, 255, 0.1);
+            --bg-image: url('https://i.pinimg.com/originals/6e/ee/fa/6eeefabeb3ad695872b46d492de961f3.jpg');
+            --overlay-bg: rgba(0, 0, 0, 0.3);
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: var(--bg-image);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            color: var(--text);
+            padding: 0 0 calc(80px + var(--safe-bottom)) 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: 16px;
+            position: relative;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-bg);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ===== LOADING OVERLAY ===== */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        .loader-text {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 16px;
+            letter-spacing: 0.5px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .ios-header {
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 16px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding-top: calc(12px + env(safe-area-inset-top, 0px));
+            box-shadow: var(--glass-shadow);
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .ios-header h1 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ===== TOOLBAR (2 TUGMA) ===== */
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            padding: 12px 16px 0;
+            margin-bottom: 12px;
+        }
+        .tool-btn {
+            flex: 1;
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--glass-shadow);
+            text-align: center;
+        }
+        .tool-btn:active {
+            transform: scale(0.97);
+            background: var(--glass-bg-light);
+        }
+
+        .settings-section {
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            margin: 0 16px 16px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .settings-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 0.5px solid var(--separator);
+            min-height: 44px;
+        }
+        .settings-row:last-child {
+            border-bottom: none;
+        }
+        .settings-label {
+            width: 80px;
+            font-size: 15px;
+            color: var(--text);
+            flex-shrink: 0;
+        }
+        .settings-control {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .text-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 17px;
+            color: var(--text);
+            outline: none;
+            text-align: right;
+        }
+        .text-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: var(--separator);
+            border-radius: 2px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            cursor: pointer;
+            border: 1px solid var(--separator);
+        }
+        .slider-value {
+            font-size: 15px;
+            color: var(--text-secondary);
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .color-group {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .color-item label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .color-item input[type="color"] {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            background: transparent;
+            padding: 0;
+        }
+        .color-item input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        .color-item input[type="color"]::-webkit-color-swatch {
+            border: 1px solid var(--separator);
+            border-radius: 50%;
+        }
+
+        .font-value {
+            font-size: 15px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .chevron {
+            color: var(--text-muted);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+        .chevron svg {
+            stroke: currentColor;
+        }
+
+        .category-tabs {
+            display: flex;
+            margin: 0 16px 16px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+        .cat-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        .cat-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: rgba(0, 122, 255, 0.1);
+        }
+
+        .templates-section {
+            padding: 0 12px;
+        }
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        .tpl-item {
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-radius: 16px;
+            padding: 8px 4px 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.15s, background 0.2s;
+            aspect-ratio: 1;
+            justify-content: center;
+            min-width: 0;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .tpl-item:active {
+            transform: scale(0.92);
+            background: var(--glass-bg-light);
+        }
+        .tpl-item.selected {
+            outline: 2px solid var(--success);
+            outline-offset: -2px;
+        }
+        .tpl-item .check {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 18px;
+            height: 18px;
+            background: var(--success);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+        .tpl-item.selected .check {
+            display: flex;
+        }
+        .tpl-item .check svg {
+            stroke: #fff;
+        }
+        .tpl-visual {
+            width: 100%;
+            max-width: 56px;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        body.theme-minimal .tpl-visual,
+        body.theme-ios .tpl-visual,
+        body.theme-summer .tpl-visual,
+        body.theme-sea .tpl-visual {
+            background: rgba(255,255,255,0.4);
+        }
+        .tpl-visual .placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #1a1a1e 25%, #2a2a2e 50%, #1a1a1e 75%);
+            animation: shimmer 1.5s infinite;
+            background-size: 200% 100%;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .tpl-name {
+            font-size: 9px;
+            color: var(--text-secondary);
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .page-btn {
+            min-width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border: 1px solid var(--glass-border);
+            color: var(--text);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .page-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .page-btn:active {
+            opacity: 0.7;
+        }
+
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-top: 1px solid var(--glass-border);
+            padding: 10px 16px calc(20px + var(--safe-bottom));
+            z-index: 10;
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+        }
+        .create-btn {
+            width: 100%;
+            background: var(--glass-bg-light);
+            color: var(--text-muted);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+        }
+        .create-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .create-btn.active:active {
+            opacity: 0.8;
+        }
+
+        /* ===== BOTTOM SHEETS ===== */
+        .bottom-sheet-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 99;
+            display: none;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+        .bottom-sheet {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-radius: 20px 20px 0 0;
+            padding: 16px;
+            padding-bottom: calc(16px + var(--safe-bottom));
+            z-index: 100;
+            transition: bottom 0.3s ease-out;
+            border-top: 1px solid var(--glass-border);
+            box-shadow: 0 -8px 32px rgba(0,0,0,0.2);
+        }
+        .bottom-sheet.open {
+            bottom: 0;
+        }
+        .bs-handle {
+            width: 36px;
+            height: 5px;
+            background: var(--separator);
+            border-radius: 3px;
+            margin: 0 auto 16px;
+        }
+        .bs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .bs-header h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .close-btn {
+            width: 28px;
+            height: 28px;
+            background: var(--glass-bg-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--glass-border);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .close-btn svg {
+            stroke: currentColor;
+        }
+        .option-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .option-item {
+            padding: 14px 16px;
+            background: var(--glass-bg-light);
+            border-radius: 14px;
+            text-align: center;
+            font-size: 16px;
+            color: var(--text);
+            cursor: pointer;
+            transition: background 0.2s;
+            border: 1px solid var(--glass-border);
+        }
+        .option-item:active {
+            background: var(--glass-bg);
+        }
+        .option-item.selected {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(0, 122, 255, 0.1);
+        }
+        .font-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .font-option {
+            padding: 14px 16px;
+            border-bottom: 0.5px solid var(--separator);
+            font-size: 17px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text);
+        }
+        .font-option:last-child {
+            border-bottom: none;
+        }
+        .font-option.active {
+            color: var(--primary);
+        }
+        .font-option .checkmark {
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        .font-option .checkmark svg {
+            stroke: currentColor;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADING OVERLAY -->
+    <div id="loading-overlay">
+        <div class="loader"></div>
+        <div class="loader-text">Emodzi - Robot</div>
+    </div>
+
+    <div class="ios-header">
+        <h1>Emodzi - Robot</h1>
+    </div>
+
+    <!-- TOOLBAR: faqat 2 tugma -->
+    <div class="toolbar">
+        <button class="tool-btn" id="blur-btn" onclick="openBlurSheet()">Blur: 40%</button>
+        <button class="tool-btn" id="theme-btn" onclick="openThemeSheet()">Theme: Dark</button>
+    </div>
+
+    <div class="settings-section">
+        <div class="settings-row">
+            <div class="settings-label">Matn</div>
+            <div class="settings-control">
+                <input type="text" class="text-input" id="text-input" placeholder="Yozing..." maxlength="12" autocomplete="off" oninput="updateCreateBtn()">
+            </div>
+        </div>
+        <div class="settings-row">
+            <div class="settings-label">Olcham</div>
+            <div class="settings-control">
+                <input type="range" id="size-slider" min="0.3" max="3.0" step="0.1" value="1.0" oninput="updateSlider('size')">
+                <div class="slider-value" id="size-val">1.00</div>
+            </div>
+        </div>
+        <div class="settings-row">
+            <div class="settings-label">Balandlik</div>
+            <div class="settings-control">
+                <input type="range" id="height-slider" min="-50" max="50" step="1" value="0" oninput="updateSlider('height')">
+                <div class="slider-value" id="height-val">0</div>
+            </div>
+        </div>
+        <div class="settings-row" id="color-row" style="display:none;">
+            <div class="settings-label">Ranglar</div>
+            <div class="settings-control">
+                <div class="color-group">
+                    <div class="color-item">
+                        <label>Tashqi</label>
+                        <input type="color" id="color-outer" value="#FFFFFF">
+                    </div>
+                    <div class="color-item">
+                        <label>Ichki</label>
+                        <input type="color" id="color-inner" value="#000000">
+                    </div>
+                    <div class="color-item">
+                        <label>Logo</label>
+                        <input type="color" id="color-logo" value="#FFFFFF">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="settings-row">
+            <div class="settings-label">Shrift</div>
+            <div class="settings-control">
+                <div class="font-value" onclick="openFonts()">
+                    <span id="current-font">Klassik</span>
+                    <span class="chevron">
+                        <svg width="12" height="20" viewBox="0 0 12 20" fill="none">
+                            <path d="M2 2 L10 10 L2 18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category-tabs">
+        <div class="cat-tab active" id="tab-name" onclick="switchCategory('name')">Name</div>
+        <div class="cat-tab" id="tab-logo" onclick="switchCategory('logo')">Logo</div>
+    </div>
+
+    <div class="templates-section">
+        <div class="templates-grid" id="templates-grid"></div>
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <div class="bottom-bar">
+        <button class="create-btn" id="create-btn" onclick="sendData()">Yaratish</button>
+    </div>
+
+    <!-- BLUR SHEET -->
+    <div class="bottom-sheet-overlay" id="blur-overlay" onclick="closeBlurSheet()"></div>
+    <div class="bottom-sheet" id="blur-sheet">
+        <div class="bs-handle"></div>
+        <div class="bs-header">
+            <h3>Blur darajasi</h3>
+            <button class="close-btn" onclick="closeBlurSheet()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2 2 L14 14 M14 2 L2 14" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="option-list" id="blur-options">
+            <div class="option-item" onclick="selectBlur(0)">0% (Blursiz)</div>
+            <div class="option-item" onclick="selectBlur(40)">40% (Yengil)</div>
+            <div class="option-item" onclick="selectBlur(75)">75% (Kuchli)</div>
+        </div>
+    </div>
+
+    <!-- THEME SHEET -->
+    <div class="bottom-sheet-overlay" id="theme-overlay" onclick="closeThemeSheet()"></div>
+    <div class="bottom-sheet" id="theme-sheet">
+        <div class="bs-handle"></div>
+        <div class="bs-header">
+            <h3>Mavzu tanlang</h3>
+            <button class="close-btn" onclick="closeThemeSheet()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2 2 L14 14 M14 2 L2 14" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="option-list" id="theme-options">
+            <div class="option-item" onclick="selectTheme('minimal')">Minimalistic</div>
+            <div class="option-item" onclick="selectTheme('dark')">Dark</div>
+            <div class="option-item" onclick="selectTheme('forest')">Forest</div>
+            <div class="option-item" onclick="selectTheme('summer')">Summer</div>
+            <div class="option-item" onclick="selectTheme('sea')">Sea</div>
+            <div class="option-item" onclick="selectTheme('ios')">IOS</div>
+            <div class="option-item" onclick="selectTheme('windows')">Windows</div>
+        </div>
+    </div>
+
+    <!-- FONT SHEET (mavjud) -->
+    <div class="bottom-sheet-overlay" id="bs-overlay" onclick="closeFonts()"></div>
+    <div class="bottom-sheet" id="bs-fonts">
+        <div class="bs-handle"></div>
+        <div class="bs-header">
+            <h3>Shrift tanlang</h3>
+            <button class="close-btn" onclick="closeFonts()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2 2 L14 14 M14 2 L2 14" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="font-list" id="font-list"></div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // ===== PREFERENCES =====
+        const STORAGE_KEY = 'emodzi_prefs_v2';
+        let prefs = {
+            blur: 40,          // 0, 40, 75
+            theme: 'dark'      // minimal, dark, forest, summer, sea, ios, windows
+        };
+
+        function loadPreferences() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && typeof parsed === 'object') {
+                        prefs = { ...prefs, ...parsed };
+                    }
+                }
+            } catch (e) {
+                console.warn('Preferences yuklanmadi:', e);
+            }
+        }
+
+        function savePreferences() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+            } catch (e) {
+                console.warn('Preferences saqlanmadi:', e);
+            }
+        }
+
+        // ===== THEME =====
+        const themeNames = {
+            minimal: 'Minimalistic',
+            dark: 'Dark',
+            forest: 'Forest',
+            summer: 'Summer',
+            sea: 'Sea',
+            ios: 'IOS',
+            windows: 'Windows'
+        };
+
+        function applyTheme() {
+            // Barcha theme klasslarini olib tashlash
+            document.body.classList.remove(
+                'theme-minimal', 'theme-dark', 'theme-forest', 
+                'theme-summer', 'theme-sea', 'theme-ios', 'theme-windows'
+            );
+            document.body.classList.add(`theme-${prefs.theme}`);
+
+            // Telegram header rangini sozlash
+            const lightThemes = ['minimal', 'summer', 'sea', 'ios'];
+            const isLight = lightThemes.includes(prefs.theme);
+            tg.setHeaderColor(isLight ? '#f2f2f7' : '#0a0e14');
+            tg.setBackgroundColor(isLight ? '#f2f2f7' : '#0a0e14');
+
+            // Tugma matni yangilash
+            document.getElementById('theme-btn').innerText = `Theme: ${themeNames[prefs.theme]}`;
+        }
+
+        function selectTheme(themeId) {
+            prefs.theme = themeId;
+            savePreferences();
+            applyTheme();
+            closeThemeSheet();
+        }
+
+        // ===== BLUR =====
+        function applyBlur() {
+            let blurPx = 0;
+            if (prefs.blur === 40) blurPx = 8;
+            else if (prefs.blur === 75) blurPx = 15;
+            else if (prefs.blur === 0) blurPx = 0;
+            // Boshqa qiymatlar uchun default 8px
+            else blurPx = 8;
+
+            document.documentElement.style.setProperty('--blur', `blur(${blurPx}px)`);
+            document.getElementById('blur-btn').innerText = `Blur: ${prefs.blur}%`;
+        }
+
+        function selectBlur(value) {
+            prefs.blur = value;
+            savePreferences();
+            applyBlur();
+            closeBlurSheet();
+        }
+
+        // ===== BLUR SHEET =====
+        function openBlurSheet() {
+            document.getElementById('blur-overlay').style.display = 'block';
+            document.getElementById('blur-sheet').classList.add('open');
+        }
+        function closeBlurSheet() {
+            document.getElementById('blur-overlay').style.display = 'none';
+            document.getElementById('blur-sheet').classList.remove('open');
+        }
+
+        // ===== THEME SHEET =====
+        function openThemeSheet() {
+            document.getElementById('theme-overlay').style.display = 'block';
+            document.getElementById('theme-sheet').classList.add('open');
+        }
+        function closeThemeSheet() {
+            document.getElementById('theme-overlay').style.display = 'none';
+            document.getElementById('theme-sheet').classList.remove('open');
+        }
+
+        // ===== QOLGAN KOD (asosiy funksiyalar) =====
+        const nameTpls = [
+            "jasur", "axi", "spam", "munis", "asliddin", "millioner", "payshanba", "work", 
+            "bekzod", "bahor", "great", "muzlik", "hack", "usdt", "vip_stars", "sooqa", 
+            "vip", "fake", "scam", "busy", "admin", "hold", "zzz", "police", "tired", "milf"
+        ];
+        const logoTpls = Array.from({length: 103}, (_, i) => i + 1).filter(n => n !== 67);
+        
+        const fonts = [
+            { id: "sans", name: "Standart" }, 
+            { id: "classic", name: "Klassik" },
+            { id: "modern", name: "Zamonaviy" }, 
+            { id: "serif", name: "Serif" }, 
+            { id: "mono", name: "Mono" }
+        ];
+
+        let selectedItems = new Set();
+        let currentCategory = 'name';
+        let currentFontId = 'classic';
+        let currentPage = 1;
+        const pageSize = 24;
+        const pricePerItem = 2;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadLottie(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '100px' });
+
+        function loadLottie(item) {
+            // Renders a pre-baked animated GIF preview instead of fetching
+            // the raw editable Lottie JSON. The source .json templates never
+            // reach the browser this way.
+            if (item.dataset.loaded === 'true') return;
+            item.dataset.loaded = 'true';
+            
+            const gifPath = item.dataset.gif;
+            const visual = item.querySelector('.tpl-visual');
+            const placeholder = visual.querySelector('.placeholder');
+            
+            if (placeholder && gifPath) {
+                const img = document.createElement('img');
+                img.setAttribute('src', gifPath);
+                img.setAttribute('alt', '');
+                img.setAttribute('loading', 'lazy');
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'contain';
+                img.style.display = 'block';
+                
+                img.addEventListener('error', () => {
+                    img.style.display = 'none';
+                    const fallback = document.createElement('div');
+                    fallback.className = 'placeholder';
+                    img.replaceWith(fallback);
+                });
+
+                placeholder.replaceWith(img);
+            }
+        }
+
+        function initFonts() {
+            const list = document.getElementById('font-list');
+            list.innerHTML = '';
+            fonts.forEach(f => {
+                const div = document.createElement('div');
+                div.className = `font-option ${f.id === currentFontId ? 'active' : ''}`;
+                div.innerHTML = `${f.name} ${f.id === currentFontId ? '<span class="checkmark"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8 L6 12 L14 4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' : ''}`;
+                div.onclick = () => selectFont(f.name, f.id);
+                list.appendChild(div);
+            });
+        }
+
+        function switchCategory(cat) {
+            currentCategory = cat;
+            selectedItems.clear();
+            currentPage = 1;
+            
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab-${cat}`).classList.add('active');
+            
+            const colorRow = document.getElementById('color-row');
+            colorRow.style.display = (cat === 'logo') ? 'flex' : 'none';
+            
+            renderGrid();
+            updateCreateBtn();
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('templates-grid');
+            grid.innerHTML = '';
+            
+            const allItems = currentCategory === 'name' ? nameTpls : logoTpls;
+            const totalPages = Math.ceil(allItems.length / pageSize) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            const start = (currentPage - 1) * pageSize;
+            const pageItems = allItems.slice(start, start + pageSize);
+            
+            const immediateLoad = pageItems.slice(0, 12);
+            
+            pageItems.forEach((tpl) => {
+                const label = currentCategory === 'name' ? String(tpl).toUpperCase() : `${tpl}`;
+                const gifPath = currentCategory === 'name' 
+                    ? `./templates_preview/${tpl}.gif` 
+                    : `./templates_tgs_preview/${String(tpl).padStart(3, '0')}.gif`;
+
+                const div = document.createElement('div');
+                div.className = `tpl-item ${selectedItems.has(tpl) ? 'selected' : ''}`;
+                div.id = `tpl-btn-${tpl}`;
+                div.dataset.gif = gifPath;
+                div.innerHTML = `
+                    <div class="check">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M2 6 L5 9 L10 3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="tpl-visual">
+                        <div class="placeholder"></div>
+                    </div>
+                    <div class="tpl-name">${label}</div>
+                `;
+                div.onclick = () => toggleTemplate(tpl);
+                grid.appendChild(div);
+                
+                if (immediateLoad.includes(tpl)) {
+                    setTimeout(() => loadLottie(div), 100);
+                } else {
+                    observer.observe(div);
+                }
+            });
+            
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            if (totalPages <= 1) return;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                btn.innerText = i;
+                btn.onclick = () => {
+                    currentPage = i;
+                    renderGrid();
+                    const section = document.querySelector('.templates-section');
+                    if (section) {
+                        const y = section.getBoundingClientRect().top + window.pageYOffset - 70;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                    }
+                };
+                pagination.appendChild(btn);
+            }
+        }
+
+        function toggleTemplate(id) {
+            const btn = document.getElementById(`tpl-btn-${id}`);
+            if (selectedItems.has(id)) {
+                selectedItems.delete(id);
+                btn.classList.remove('selected');
+            } else {
+                selectedItems.add(id);
+                btn.classList.add('selected');
+            }
+            updateCreateBtn();
+        }
+
+        function updateSlider(type) {
+            const val = document.getElementById(`${type}-slider`).value;
+            document.getElementById(`${type}-val`).innerText = type === 'size' ? parseFloat(val).toFixed(2) : val;
+        }
+
+        function openFonts() {
+            document.getElementById('bs-overlay').style.display = 'block';
+            document.getElementById('bs-fonts').classList.add('open');
+        }
+        
+        function closeFonts() {
+            document.getElementById('bs-overlay').style.display = 'none';
+            document.getElementById('bs-fonts').classList.remove('open');
+        }
+        
+        function selectFont(name, id) {
+            currentFontId = id;
+            document.getElementById('current-font').innerText = name;
+            initFonts();
+            closeFonts();
+        }
+
+        function updateCreateBtn() {
+            const btn = document.getElementById('create-btn');
+            const textInput = document.getElementById('text-input');
+            const text = textInput.value.trim();
+            const total = selectedItems.size * pricePerItem;
+            
+            if (selectedItems.size > 0 && text.length > 0) {
+                btn.classList.add('active');
+                btn.innerText = `Yaratish`;
+            } else {
+                btn.classList.remove('active');
+                btn.innerText = 'Yaratish';
+            }
+        }
+
+        function base64urlEncode(str) {
+            const utf8Bytes = new TextEncoder().encode(str);
+            const binaryStr = Array.from(utf8Bytes).map(b => String.fromCharCode(b)).join('');
+            return btoa(binaryStr).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+
+        function sendData() {
+            const text = document.getElementById('text-input').value.trim();
+            if (!text) {
+                tg.showAlert("Avval matn yozing");
+                return;
+            }
+            if (selectedItems.size === 0) {
+                tg.showAlert("Hech bolmasa bitta shablon tanlang");
+                return;
+            }
+            
+            buildAndSendPayload(text);
+        }
+        
+        function buildAndSendPayload(textToEncode) {
+            const fontMap = { "sans": "0", "classic": "1", "modern": "2", "serif": "3", "mono": "4" };
+            
+            const typeChar = currentCategory === 'name' ? 'N' : 'L';
+            const fontChar = fontMap[currentFontId] || '1';
+            const scaleInt = Math.round(parseFloat(document.getElementById('size-slider').value) * 10);
+            const yOffset = parseInt(document.getElementById('height-slider').value);
+            
+            const outHex = document.getElementById('color-outer').value.substring(1).toUpperCase();
+            const inHex = document.getElementById('color-inner').value.substring(1).toUpperCase();
+            const logoHex = document.getElementById('color-logo').value.substring(1).toUpperCase();
+            
+            const tplStr = Array.from(selectedItems).join('-');
+            const word64 = base64urlEncode(textToEncode);
+            
+            const payload = `${typeChar}${fontChar}${scaleInt}_${yOffset}_${outHex}${inHex}${logoHex}_${tplStr}_${word64}`;
+            
+            if (payload.length > 64) {
+                tg.showAlert("Kop shablon tanladingiz. Kamroq tanlang.");
+                return;
+            }
+            
+            const botUrl = `https://t.me/LaborantRobot?start=${payload}`;
+            tg.openTelegramLink(botUrl);
+            
+            setTimeout(() => {
+                tg.close();
+            }, 500);
+        }
+
+        // ===== BOSHLANG'ICH ISHGA TUSHIRISH =====
+        function init() {
+            loadPreferences();
+            applyTheme();
+            applyBlur();
+            initFonts();
+            switchCategory('name');
+            updateCreateBtn();
+        }
+        init();
+
+        // Loading animatsiyani yashirish
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-overlay').classList.add('hidden');
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

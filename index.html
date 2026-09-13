@@ -472,6 +472,12 @@
         .tpl-item .check svg {
             stroke: #fff;
         }
+        img, .tpl-visual, .tpl-item {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none; /* iOS long-press "Save Image" menyusini o'chiradi */
+        }
         .tpl-visual {
             width: 100%;
             max-width: 56px;
@@ -847,6 +853,16 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
+
+        // O'ng tugma menyusini (Save Image va h.k.) bloklash
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+        // Uzoq bosishda (long-press) rasm/matn tanlanishini bloklash
+        document.addEventListener('touchstart', () => {}, { passive: true });
+        document.addEventListener('selectstart', (e) => {
+            if (e.target.closest('.tpl-item, img')) e.preventDefault();
+        });
+        document.addEventListener('dragstart', (e) => e.preventDefault());
 
         // ===== PREFERENCES =====
         const STORAGE_KEY = 'emodzi_prefs_v2';
